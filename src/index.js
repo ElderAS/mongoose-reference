@@ -1,23 +1,29 @@
-const Schema = require('mongoose').Schema
-
-module.exports = function(options = {}) {
-  let { models, multiple = false, key, required = true } = options
-  if (!key) key = multiple ? 'references' : 'reference'
+const Schema = require("mongoose").Schema;
+module.exports = function (options = {}) {
+  let {
+    models,
+    multiple = false,
+    key,
+    required = true,
+    modelKey = "onModel",
+    referenceKey = "ref"
+  } = options;
+  if (!key) key = multiple ? "references" : "reference";
 
   let reference_content = {
-    on: {
+    [referenceKey]: {
       type: Schema.Types.ObjectId,
       required,
-      refPath: key + '.onModel',
+      refPath: `${key}.${modelKey}`
     },
-    onModel: {
+    [modelKey]: {
       type: String,
       required,
-      enum: models,
-    },
-  }
+      enum: models
+    }
+  };
 
   return {
-    [key]: multiple ? [reference_content] : reference_content,
-  }
-}
+    [key]: multiple ? [reference_content] : reference_content
+  };
+};

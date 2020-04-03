@@ -13,16 +13,16 @@
 ### Usage
 
 ```js
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
-const Reference = require('mongoose-reference')
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const Reference = require("mongoose-reference");
 
 let YourSchema = new Schema({
   title: String,
   description: String,
   author: String,
-  ...Reference({ models: ['Company', 'Group'], multiple: true }),
-})
+  ...Reference({ models: ["Company", "Group"], multiple: true })
+});
 ```
 
 After implementing `mongoose-reference` extends your Schema with `reference` or `references`.
@@ -37,28 +37,32 @@ let YourSchema = new Schema({
   author: String,
   references: [
     {
-      on: {
+      ref: {
         type: Schema.Types.ObjectId,
         required: true,
-        refPath: 'references.onModel',
+        refPath: "references.onModel"
       },
       onModel: {
         type: String,
         required: true,
-        enum: ['Company', 'Group'],
-      },
-    },
-  ],
-})
+        enum: ["Company", "Group"]
+      }
+    }
+  ]
+});
 ```
 
 ### Options
 
-| Key      | Type    | Description                                                                                       |
-| -------- | ------- | ------------------------------------------------------------------------------------------------- |
-| models   | Array   | Define all allowed reference types (enum). Must be the same as the name of the registered Schemas |
-| key      | String  | Define your custom key. (Default: `reference` or `references`)                                    |
-| multiple | Boolean | Set to true if you want to have multiple references                                               |
+| Key          | Type    | Description                                                                                       |
+| ------------ | ------- | ------------------------------------------------------------------------------------------------- |
+| models       | Array   | Define all allowed reference types (enum). Must be the same as the name of the registered Schemas |
+| key          | String  | Define your custom key. (Default: `reference` or `references`)                                    |
+| multiple     | Boolean | Set to true if you want to have multiple references                                               |
+| modelKey     | String  | Define your custom key for model value. (Default: `onModel`)                                      |
+| referenceKey | String  | Define your custom key for reference value. (Default: `ref`)                                      |
+
+**Important!** Mongoose has some reserved keys that will throw an error if used. See list here: [Reserved keys](https://mongoosejs.com/docs/api/schema.html#schema_Schema.reserved)
 
 Example
 
